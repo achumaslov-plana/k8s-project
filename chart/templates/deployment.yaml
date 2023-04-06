@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  labels:
+    app: {{ .Release.Name }}-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-deployment
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      name: {{ .Release.Name }}-deployment
+      labels:
+        app: {{ .Release.Name }}-deployment
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        image: "{{ .Values.web.repository }}:{{ .Values.web.tag }}"
+        ports:
+          - name: {{ .Release.Name }}-http
+            containerPort: 80
+        startupProbe:
+          httpGet:
+            path: /
+            port: 80
+          failureThreshold: 30
+          periodSeconds: 20
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 20
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          {{- toYaml .Values.web.resources | nindent 10 }}

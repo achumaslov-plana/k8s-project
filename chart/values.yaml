@@ -1,0 +1,18 @@
+replicaCount: 2
+
+pullPolicy: Always
+
+web:
+  repository: localhost:32000/web
+  tag: latest
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "10m"
+    limits:
+      memory: "128Mi"
+      cpu: "100m"
+
+
+ingress:
+  hostName: web.k8s

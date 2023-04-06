@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-svc
+  labels:
+    app: {{ .Release.Name }}-deployment
+
+spec:
+  ports:
+    - name: {{ .Release.Name }}-svc-port
+      protocol: TCP
+      port: 80
+      targetPort: {{ .Release.Name }}-http
+  selector:
+    app: {{ .Release.Name }}-deployment
