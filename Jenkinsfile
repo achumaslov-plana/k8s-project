@@ -16,7 +16,7 @@ pipeline {
           description: '')
         string(
           name: "Image_Tag", 
-          defaultValue: '$BUILD_NUMBER', 
+          defaultValue: 'latest', 
           description: '')
       booleanParam(
           name: "PushImage", 
@@ -32,7 +32,7 @@ pipeline {
 -f ./web/Dockerfile \
 ./web/"""
               docker.build(
-                  "${params.Image_Name}:${params.Image_Tag}",
+                  "${params.Image_Name}:$BUILD_NUMBER",
                   buildArgs)
           }
         }
