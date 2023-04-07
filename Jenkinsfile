@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  agent {
+      node {
+          label 'kubeagent'
+      }
+  }
   stages {
     stage('Install Docker') {
       steps {
